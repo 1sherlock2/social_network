@@ -1,0 +1,45 @@
+body {
+  display: block;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color:#00B7FF;
+}
+
+#content {
+  position: relative;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#room {
+  background-color: #ddd;
+  margin-bottom: 1em;
+}
+#room-list {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 300px;
+  top: 0;
+  height: 250px;
+  width: 50px;
+}
+#room-list .room-list_clients {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+#messages {
+  width: 290px;
+  height: 300px;
+  overflow: auto;
+  background-color: #eee;
+  margin-bottom: 1em;
+  margin-right: 10px;
+}
+  
+#help {
+  margin-top: 50px;
+}
