@@ -12,33 +12,22 @@ const child = (data) => {
   return `<div>${data}</div>`;
 }
 
+console.log(socket)
+
 socket.on('nameResult', (data) => {
-  data.success ? $('#room-list').append(child(data.name)) : null
+  data.success ? $('#room-list').append(child(data.name)) : null;
 })
 
 socket.on('message', (data) => {
-  data.text ? $('#messages').append(child(data.text)) : null
+  data.text ? $('#messages').append(child(data.text)) : null;
 })
 
-// $('#form-nickname').submit(e => {
-//   e.preventDefault();
-//   e.stopPropagation();
-//   console.log(e.changeNickName.value)
-//   // const data = $('#send-form')[0];
-//   // const form = new FormData();
-//   // form.append(data)
-//   // console.log(data)
-// })
-console.log($('#formNickname').submit(e => {
+$('#formNickname').submit(e => {
   e.preventDefault();
   socket.emit('nameAttempt', e.target[0].value)
-}))
+})
 
-
-document.forms.formNickname.onsubmit = () => {
-
-}
-
-socket.emit('sendMessage', () => {
-
+e.preventDefault();
+$('#exit').submit(e => { 
+  socket.emit('leave', 'NewLobby')
 })

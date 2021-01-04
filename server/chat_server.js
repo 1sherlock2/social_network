@@ -12,7 +12,6 @@ const assignGuestName = (socket, guestNumber, nickNames, namesUsed) => {
   nickNames[socket.id] = name;
   socket.emit('nameResult', { success: true, name: name } );
   namesUsed.push(name)
-  console.log(namesUsed)
   return guestNumber + 1;
 }
 
@@ -42,7 +41,6 @@ const joinRoom = (socket, room) => {
 
 const handleNameChangeAttempts = (socket, nickNames, namesUsed) => {
   socket.on('nameAttempt', (name) => {
-    console.log(name)
     // имя начинается или совпадает со строкой 'Guest'
     if (name.indexOf('Guest') === 0) {
       socket.emit('nameResult', { success: false, message: 'Names cannot begin with "Guest"'})
@@ -54,9 +52,7 @@ const handleNameChangeAttempts = (socket, nickNames, namesUsed) => {
       // переименование пользователя
       const previousName = nickNames[socket.id];
       const previousNameIndex = namesUsed.indexOf(previousName);
-      namesUsed.push(name);
-      nickNames[socket.id] = name;
-      delete nameUsed[previousNameIndex];
+      namesUsed.splice(previousNameIndex, 1, name)
       socket.emit('nameResult', { success: true, name: name })
       socket.broadcast.to(currentRoom[socket.id]).emit('message', { text: `${previousName} is now known as ${name}`})
     }
@@ -73,6 +69,7 @@ const handleRoomJoining = socket => {
   socket.on('leave', (room) => {
     socket.leave(currentRoom[socket.id])
     joinRoom(socket, room.newRoom);
+    console.log(room)
   })
 } 
 
@@ -96,7 +93,7 @@ exports.listen = (server) => {
     joinRoom(socket, 'Lobby');
     handleMessageBroadcasting(socket, nickNames);
     handleNameChangeAttempts(socket, nickNames, namesUsed);
-    // handleRoomJoining(socket)
+    handleRoomJoining(socket)
     socket.on('rooms', () => {
       socket.emit('rooms', io.socket.manager.rooms);
       handleClientDisconnection(socket, nickNames, namesUsed);
