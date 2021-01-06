@@ -1,0 +1,16 @@
+
+body {
+  box-sizing: border-box;
+  margin:0;
+  background-color:rgb(255, 237, 192);
+}
+
+.main {
+  display: grid;
+  grid-template-areas: "rooms roomUsed"
+                       "chat roomUsed";
+  margin: 10% 18%;
+  width: 70%;
+  height:auto;
+  background-color: aliceblue;
+}

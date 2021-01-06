@@ -1,0 +1,8 @@
+.chat {
+  grid-area: chat;
+  min-height: 200px;
+  background-color: blanchedalmond;
+  padding: 5px;
+  height: auto;
+  margin: 10px;
+}

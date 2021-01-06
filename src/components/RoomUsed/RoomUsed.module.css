@@ -1,0 +1,5 @@
+.roomUsed {
+  grid-area: roomUsed;
+  text-align: center;
+  margin-top: 10px;
+}
