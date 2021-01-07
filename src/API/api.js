@@ -14,6 +14,6 @@ export const api = {
     return instance.get("/");
   },
   entryRoom(values) {
-    return instance.post("/entry", { values });
+    return instance.post("/", { values });
   },
 };

@@ -2,17 +2,18 @@ import React, { useRef, useState } from "react";
 import { api } from "../../API/api";
 import s from "./ModalAuth.module.css";
 
-export const ModalAuth = () => {
-  // const [roomId, setRoomId] = useState('')
-  // const [roomPass, setRoomPass] = useState('')
-
+export const ModalAuth = ({ isOpenRoom }) => {
   const handleClick = (e) => {
     e.preventDefault();
     const { roomId, roomPass } = e.target;
-    api.entryRoom({
-      roomId: roomId.value,
-      roomPass: roomPass.value,
-    });
+    api
+      .entryRoom({
+        roomId: roomId.value,
+        roomPass: roomPass.value,
+      })
+      .then((data) => {
+        data.data && isOpenRoom(data.data);
+      });
   };
   return (
     <div className={s.modal}>
