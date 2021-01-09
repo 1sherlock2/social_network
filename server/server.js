@@ -1,12 +1,11 @@
 const http = require("http");
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 const entry = require("./controllers/EntryController");
 const constants = require("./utils/constants");
 const chatServer = require("./chat_server/chat_server");
-const rooms = require("./utils/rooms");
+const rooms = [];
 
 const app = express();
 // const urlencodedFalse = bodyParser.urlencoded({ extended: false });

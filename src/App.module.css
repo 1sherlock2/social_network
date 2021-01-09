@@ -5,7 +5,11 @@ body {
   background-color:rgb(255, 237, 192);
 }
 
-.main {
+
+.container {
+  position: relative;
+}
+.container .main {
   display: grid;
   grid-template-areas: "rooms roomUsed"
                        "chat roomUsed";

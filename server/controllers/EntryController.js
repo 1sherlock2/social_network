@@ -13,6 +13,8 @@ router.post("/", (req, res) => {
         ["messages", []],
       ])
     );
+  } else {
+    res.status(404).json({ message: "Такой комнаты нет " });
   }
   const getRoom = rooms.get(roomId);
   const entriesRoom = [...getRoom.entries()];

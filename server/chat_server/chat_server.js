@@ -10,7 +10,6 @@ let arrayUsersInRoom = [];
 const assignGuestName = (socket, guestNumber, nickNames, namesUsed) => {
   const name = `Guest ${guestNumber}`;
   nickNames[socket.id] = name;
-  console.log(name);
   socket.emit("nameResult", { success: true, name: name });
   namesUsed.push(name);
   return guestNumber + 1;

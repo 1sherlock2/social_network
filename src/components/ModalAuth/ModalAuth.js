@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../API/api";
+import CreateRoom from "../CreateRoom/CreateRoom";
 import s from "./ModalAuth.module.css";
 
 export const ModalAuth = ({ isOpenRoom }) => {
@@ -12,7 +14,8 @@ export const ModalAuth = ({ isOpenRoom }) => {
         roomPass: roomPass.value,
       })
       .then((data) => {
-        data.data && isOpenRoom(data.data);
+        const result = data.data && Object.fromEntries(data.data) 
+        isOpenRoom(result);
       });
   };
   return (
@@ -32,6 +35,7 @@ export const ModalAuth = ({ isOpenRoom }) => {
           placeholder="Password"
         />
         <button>Entry</button>
+        <Link to='/createRoom'> Create new room </Link>
       </form>
     </div>
   );

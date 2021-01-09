@@ -7,6 +7,6 @@ export const reducer = (state, action) => {
         data: action.data,
       };
     default:
-      return { ...state };
+      return state;
   }
 };
