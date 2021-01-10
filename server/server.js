@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const entry = require("./controllers/EntryController");
+const createRoom = require('./controllers/CreateRoom')
 const constants = require("./utils/constants");
 const chatServer = require("./chat_server/chat_server");
 const rooms = [];
@@ -16,6 +17,7 @@ const app = express();
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json())
 app.use("/", entry);
+app.use("/create", createRoom)
 
 const PORT = constants.PORT;
 

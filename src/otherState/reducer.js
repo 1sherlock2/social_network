@@ -6,6 +6,11 @@ export const reducer = (state, action) => {
         isAuth: true,
         data: action.data,
       };
+    case "CREATED_ROOM":
+      return {
+        ...state,
+        createdRoom: action.createdRoom
+      }
     default:
       return state;
   }

@@ -4,7 +4,7 @@ import { api } from "../../API/api";
 import CreateRoom from "../CreateRoom/CreateRoom";
 import s from "./ModalAuth.module.css";
 
-export const ModalAuth = ({ isOpenRoom }) => {
+export const ModalAuth = ({ isOpenRoom, isCreateRoom}) => {
   const handleClick = (e) => {
     e.preventDefault();
     const { roomId, roomPass } = e.target;
@@ -35,8 +35,8 @@ export const ModalAuth = ({ isOpenRoom }) => {
           placeholder="Password"
         />
         <button>Entry</button>
-        <Link to='/createRoom'> Create new room </Link>
       </form>
+      <button className={s.createRoom} onClick={() => isCreateRoom(true)}> Create new room </button>
     </div>
   );
 };

@@ -13,7 +13,10 @@ export const api = {
   getRooms() {
     return instance.get("/");
   },
-  entryRoom(values) {
+  entryRoom: (values) => {
     return instance.post("/", { values });
   },
+  createRoom: (values) => {
+    return instance.post("/create",  values )
+  }
 };

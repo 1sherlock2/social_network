@@ -8,7 +8,7 @@ import CreateRoom from "./components/CreateRoom/CreateRoom";
 import MainContent from "./components/MainContent/MainContent";
 
 const App = () => {
-  const initialState = { isAuth: false };
+  const initialState = { isAuth: false, createdRoom: false };
   const [state, dispatch] = useReducer(reducer, initialState);
   const [room, setRoom] = useState(null);
 
@@ -19,19 +19,30 @@ const App = () => {
       data,
     });
   };
+  const isCreateRoom = (bool) => {
+    dispatch({
+      type: "CREATED_ROOM",
+      createdRoom: bool
+    })
+  }
+  
   useEffect(() => {
     setRoom(state.data);
-  }, [state.data]);
+    console.log('render')
+  }, [state.data, state.createdRoom]);
 
-  if (!state.isAuth) {
-    return <ModalAuth isOpenRoom={isOpenRoom} />;
+  if (!state.isAuth && !state.createdRoom) {
+    return <ModalAuth isOpenRoom={isOpenRoom} isCreateRoom={isCreateRoom}/>;
+  }
+
+  if (!state.isAuth && state.createdRoom) {
+    return <CreateRoom isCreateRoom={isCreateRoom} />
   }
 
   return (
     <div className={s.container}>
       <Switch>
-        <Route path='/createRoom'><CreateRoom /></Route> 
-        <Route path='/'><MainContent room={room} /></Route>
+        <Route exact path='/'> <MainContent room={room} /> </Route>
       </Switch>
     </div>
   );
