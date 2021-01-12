@@ -7,10 +7,10 @@ import s from "./ModalAuth.module.css";
 export const ModalAuth = ({ isOpenRoom, isCreateRoom}) => {
   const handleClick = (e) => {
     e.preventDefault();
-    const { roomId, roomPass } = e.target;
+    const { roomName, roomPass } = e.target;
     api
       .entryRoom({
-        roomId: roomId.value,
+        roomName: roomName.value,
         roomPass: roomPass.value,
       })
       .then((data) => {
@@ -24,9 +24,9 @@ export const ModalAuth = ({ isOpenRoom, isCreateRoom}) => {
       <form className={s.formModal} onSubmit={handleClick}>
         <input
           className={s.modalId}
-          name="roomId"
+          name="roomName"
           type="text"
-          placeholder="Id rooms"
+          placeholder="Room name"
         />
         <input
           className={s.modalPass}

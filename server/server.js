@@ -16,8 +16,7 @@ const app = express();
 // });
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json())
-app.use("/", entry);
-app.use("/create", createRoom)
+app.use("/", entry, createRoom );
 
 const PORT = constants.PORT;
 
