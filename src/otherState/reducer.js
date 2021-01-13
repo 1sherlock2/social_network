@@ -11,6 +11,12 @@ export const reducer = (state, action) => {
         ...state,
         createdRoom: action.createdRoom
       }
+    case "OUT_FROM_ROOM":
+      return {
+        data: null,
+        isAuth: false,
+        createdRoom: null
+      }
     default:
       return state;
   }

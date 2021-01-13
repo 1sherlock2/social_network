@@ -9,11 +9,7 @@ const chatServer = require("./chat_server/chat_server");
 const rooms = [];
 
 const app = express();
-// const urlencodedFalse = bodyParser.urlencoded({ extended: false });
-// const bodyParserJsonTrue = bodyParser.json({
-//   inflate: true,
-//   strict: true,
-// });
+
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json())
 app.use("/", entry, createRoom );

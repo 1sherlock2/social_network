@@ -1,0 +1,24 @@
+.backButton {
+  display: grid;
+  justify-content: end;
+  margin: 20px;
+}
+
+.backButton button {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  margin: 2px 0;
+  border: solid 1px transparent;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  color: #ffffff;
+  background-color: #9555af;
+  cursor: pointer;
+}
+
+.backButton button:active {
+  border: none;
+  background-color: #9555af;
+  opacity: 0.7;
+}

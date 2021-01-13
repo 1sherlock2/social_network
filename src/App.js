@@ -12,6 +12,13 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [room, setRoom] = useState(null);
 
+  const outFromRoom = () => {
+    dispatch({
+      type: "OUT_FROM_ROOM",
+      isAuth: false,
+    })
+  }
+
   const isOpenRoom = (data) => {
     dispatch({
       type: "IS_AUTH",
@@ -41,7 +48,7 @@ const App = () => {
   return (
     <div className={s.container}>
       <Switch>
-        {room && <Route exact path='/'> <MainContent room={room} /> </Route>}
+        {room && <Route exact path='/'> <MainContent room={room} outFromRoom={outFromRoom} /> </Route>}
       </Switch>
     </div>
   );
