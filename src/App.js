@@ -28,7 +28,6 @@ const App = () => {
   
   useEffect(() => {
     setRoom(state.data);
-    console.log('render')
   }, [state.data, state.createdRoom]);
 
   if (!state.isAuth && !state.createdRoom) {
@@ -42,7 +41,7 @@ const App = () => {
   return (
     <div className={s.container}>
       <Switch>
-        <Route exact path='/'> <MainContent room={room} /> </Route>
+        {room && <Route exact path='/'> <MainContent room={room} /> </Route>}
       </Switch>
     </div>
   );

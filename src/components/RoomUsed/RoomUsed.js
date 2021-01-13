@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./RoomUsed.module.css";
 
-export const RoomUsed = ({ users }) => {
+const RoomUsed = ({ users }) => {
 const usersArray = Object.values(users) || [];
 console.log(usersArray)
   return (
@@ -13,3 +13,5 @@ console.log(usersArray)
     </div>
   );
 };
+
+export default RoomUsed;
