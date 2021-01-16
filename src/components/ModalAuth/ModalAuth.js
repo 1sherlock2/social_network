@@ -15,8 +15,8 @@ export const ModalAuth = ({ isOpenRoom, isCreateRoom }) => {
       .then((data) => {
         const result = data.data && Object.fromEntries(data.data);
         isOpenRoom(result);
+        socket.emit('getUsersInRoom', { roomName: result.roomName });
       });
-    socket.emit('getUsersInRoom', roomName);
   };
   return (
     <div className={s.modal}>

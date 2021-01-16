@@ -1,5 +1,6 @@
 const socketIO = require('socket.io');
 const rooms = require('../roomData');
+const { postAllUsers } = require('../utils/socketName');
 
 let io;
 let guestNumber = 1;
@@ -8,40 +9,58 @@ let nickNames = {};
 let currentRoom = {};
 let arrayUsersInRoom = [];
 
-const getRoomName = (socket) => {
-  socket.on('getUsersInRoom', (roomName) => {
-    return roomName;
-  });
-};
-
 const assignGuestName = (socket, guestNumber, nickNames, namesUsed) => {
   const name = `Guest ${guestNumber}`;
   nickNames[socket.id] = name;
-  socket.emit('nameResult', { success: true, name: name });
-  namesUsed.push(name);
   return guestNumber + 1;
 };
 
-const joinRoom = (socket, room) => {
-  socket.join(room);
-  // console.log(socket.id);
-  currentRoom[socket.id] = room;
-  socket.emit('joinResult', { room: room });
-  socket.broadcast
-    .to(room)
-    .emit('message', { text: `${nickNames[socket.id]} has joined in ${room}` });
-  // const usersInRoom = socket.client.conn.server.clientsCount
-  const usersInRoom = io.sockets.sockets;
-
-  let usersInRoomSummary = `Users currently in ${room}: `;
-  if (usersInRoom) {
-    for (let [key] of usersInRoom) {
-      arrayUsersInRoom.push(key);
+const joinRoom = (socket) => {
+  const nickName = [nickNames[socket.id]];
+  socket.on('getUsersInRoom', (data) => {
+    const { roomName } = data;
+    if (rooms.has(roomName)) {
+      currentRoom.roomName = roomName;
+      const getRoom = rooms.get(roomName); // поиск комнаты
+      const usersArray = getRoom.get('users'); // добавление нового пользователя в базу данных
+      usersArray.set(socket.id, nickName);
+      socket.join(roomName); // ВХОД В КОМНАТУ
+    } else {
+      return new Error(`${roomName} room not found`);
     }
-    usersInRoomSummary += '.';
-    socket.emit('message', { text: usersInRoomSummary });
+  });
+};
+
+const postAlUsers = (socket) => {
+  const { roomName } = currentRoom;
+  if (roomName) {
+    const getRoom = rooms.get(roomName);
+    const usersArray = getRoom.get('users');
+    const usersArrayForSocket = [...usersArray.values()];
+    socket.to(currentRoom.roomName).emit(postAllUsers, usersArrayForSocket); // отправка массива пользователей на фронт
   }
 };
+
+// const joinRoom = (socket) => {
+//   socket.join(room);
+//   // console.log(socket.id);
+//   currentRoom[socket.id] = room;
+//   socket.emit('joinResult', { room: room });
+//   socket.broadcast
+//     .to(room)
+//     .emit('message', { text: `${nickNames[socket.id]} has joined in ${room}` });
+//   // const usersInRoom = socket.client.conn.server.clientsCount
+//   const usersInRoom = io.sockets.sockets;
+
+//   let usersInRoomSummary = `Users currently in ${room}: `;
+//   if (usersInRoom) {
+//     for (let [key] of usersInRoom) {
+//       arrayUsersInRoom.push(key);
+//     }
+//     usersInRoomSummary += '.';
+//     socket.emit('message', { text: usersInRoomSummary });
+//   }
+// };
 
 const handleNameChangeAttempts = (socket, nickNames, namesUsed) => {
   socket.on('nameAttempt', (name) => {
@@ -98,14 +117,14 @@ const handleClientDisconnection = (socket, nicknames, namesUsed) => {
 exports.listen = (server, rooms) => {
   io = socketIO(server, {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: '*',
     },
   });
   io.sockets.on('connection', (socket) => {
-    const roomName = getRoomName(socket);
-    console.log(roomName);
+    console.log('users is assigned');
     guestNumber = assignGuestName(socket, guestNumber, nickNames, namesUsed);
     joinRoom(socket);
+    postAlUsers(socket);
     handleMessageBroadcasting(socket, nickNames);
     handleNameChangeAttempts(socket, nickNames, namesUsed);
     handleRoomJoining(socket);

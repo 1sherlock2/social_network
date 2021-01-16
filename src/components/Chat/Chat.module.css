@@ -1,8 +1,18 @@
-.chat {
+.chat_block {
   grid-area: chat;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
   min-height: 200px;
   background-color: blanchedalmond;
   padding: 5px;
   height: auto;
   margin: 10px;
+}
+
+.chat_block .chat_textarea form {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 10px;
 }

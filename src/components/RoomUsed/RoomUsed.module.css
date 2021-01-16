@@ -1,5 +1,19 @@
 .roomUsed {
   grid-area: roomUsed;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
   text-align: center;
   margin-top: 10px;
+}
+.roomUsed .roomUser_title {
+  text-align: center;
+}
+
+.roomUsed .roomUsed_content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 10px;
+  margin: 20px 10px;
 }
