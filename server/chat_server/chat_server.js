@@ -16,29 +16,24 @@ const assignGuestName = (socket, guestNumber, nickNames, namesUsed) => {
 };
 
 const joinRoom = (socket) => {
-  const nickName = [nickNames[socket.id]];
+  const nickName = nickNames[socket.id];
   socket.on('getUsersInRoom', (data) => {
     const { roomName } = data;
+    const getRoom = rooms.get(roomName); // поиск комнаты
+    const usersArray = getRoom.get('users'); // добавление нового пользователя в базу данных
+
     if (rooms.has(roomName)) {
-      currentRoom.roomName = roomName;
-      const getRoom = rooms.get(roomName); // поиск комнаты
-      const usersArray = getRoom.get('users'); // добавление нового пользователя в базу данных
       usersArray.set(socket.id, nickName);
       socket.join(roomName); // ВХОД В КОМНАТУ
     } else {
       return new Error(`${roomName} room not found`);
     }
-  });
-};
 
-const postAlUsers = (socket) => {
-  const { roomName } = currentRoom;
-  if (roomName) {
-    const getRoom = rooms.get(roomName);
-    const usersArray = getRoom.get('users');
     const usersArrayForSocket = [...usersArray.values()];
-    socket.to(currentRoom.roomName).emit(postAllUsers, usersArrayForSocket); // отправка массива пользователей на фронт
-  }
+    console.log(usersArrayForSocket)
+    socket.emit('postAllUsers', usersArrayForSocket); // отправка массива пользователей на фронт
+    socket.emit('repeatPostAllUsers', [...usersArray.values()])
+  });
 };
 
 // const joinRoom = (socket) => {
@@ -91,18 +86,26 @@ const handleNameChangeAttempts = (socket, nickNames, namesUsed) => {
 };
 
 const handleMessageBroadcasting = (socket, nickNames) => {
-  socket.on('sendMessage', (message) => {
-    socket.broadcast
-      .to(message.room)
-      .emit('message', { text: `${nickNames[socket.id]}: ${message.text}` });
+  socket.on('sendMessage', (data) => {
+    console.log(data)
+    const getRoom = rooms.get(currentRoom.roomName)
+    console.log(getRoom)
+    const nickName = getRoom.get('users');
+    console.log(nickName)
+    // socket.broadcast
+    //   .to(message.room)
+    //   .emit('message', { text: `${nickNames[socket.id]}: ${d.text}` });
+    
+
   });
+
 };
 
 const handleRoomJoining = (socket) => {
   socket.on('leave', (room) => {
     socket.leave(currentRoom[socket.id]);
-    joinRoom(socket, room.newRoom);
-    console.log(room);
+    console.log(currentRoom)
+    console.log(room)
   });
 };
 
@@ -114,7 +117,7 @@ const handleClientDisconnection = (socket, nicknames, namesUsed) => {
   });
 };
 
-exports.listen = (server, rooms) => {
+exports.listen = (server) => {
   io = socketIO(server, {
     cors: {
       origin: '*',
@@ -124,7 +127,6 @@ exports.listen = (server, rooms) => {
     console.log('users is assigned');
     guestNumber = assignGuestName(socket, guestNumber, nickNames, namesUsed);
     joinRoom(socket);
-    postAlUsers(socket);
     handleMessageBroadcasting(socket, nickNames);
     handleNameChangeAttempts(socket, nickNames, namesUsed);
     handleRoomJoining(socket);

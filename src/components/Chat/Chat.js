@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { socket } from '../../sockets/sockets';
 import s from './Chat.module.css';
 
 const Chat = ({ users, messages }) => {
   const [message, setMessage] = useState(null);
-  const onSubmit = () => {
-    console.log('s');
+  const onSubmit = (e) => {
+    e.preventDefault()
+    socket.emit('sendMessage', { id: socket.id, message });
   };
   return (
     <div className={s.chat_block}>

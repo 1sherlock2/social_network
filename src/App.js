@@ -16,6 +16,7 @@ const App = () => {
       type: 'OUT_FROM_ROOM',
       isAuth: false,
     });
+    socket.emit('leave', { payload: state.data })
   };
 
   const isOpenRoom = (data) => {

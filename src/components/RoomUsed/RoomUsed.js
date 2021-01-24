@@ -3,14 +3,19 @@ import { socket } from '../../sockets/sockets';
 import s from './RoomUsed.module.css';
 
 const RoomUsed = () => {
-  const [usersArray, setUsersArray] = useState([]);
+  const [usersArray, setUsersArray] = useState();
 
   useEffect(() => {
     socket.on('postAllUsers', (data) => {
       setUsersArray(data);
     });
   }, []);
-  console.log(usersArray);
+
+  useEffect(() => {
+    socket.on('repeatPostAllUsers', (data) => {
+      setUsersArray(data)
+    })
+  }, [usersArray])
 
   return (
     <div className={s.roomUsed}>

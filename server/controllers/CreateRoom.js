@@ -22,7 +22,7 @@ router.post('/create', (req, res) => {
         ['roomName', newRoomName],
         ['password', passWithBcrypt],
         ['users', new Map()],
-        ['messages', []],
+        ['messages', new Map([])],
       ])
     );
     return res.status(200).json({ status: true });
